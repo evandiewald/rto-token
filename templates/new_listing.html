@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="card my-3 col-6 mx-auto">
+
+  <h5 class="card-header">New Home</h5>
+  <div class="card-body">
+    <form action="/listings/new/post" enctype="multipart/form-data" method="post">
+        <div class="my-3 mx-5">
+            <h6 class="alert-warning text-center">Only verified landlords can list homes. If you would like to be added, contact the administrator.</h6>
+            <label for="renter" class="form-label">Renter ETH Address</label>
+            <input id="renter" name="renter" class="form-control" required>
+            <label for="streetAddress" class="form-label">Street Address</label>
+            <input id="streetAddress" name="streetAddress" class="form-control" required>
+            <label for="description" class="form-label">Description</label>
+            <input id="description" name="description" class="form-control" required>
+            <label for="listPrice" class="form-label">Down Payment (RTO)</label>
+            <input id="listPrice" name="listPrice" class="form-control" type="number" required>
+            <label for="earningsPercent" class="form-label">RTO Earnings Percentage</label>
+            <input id="earningsPercent" name="earningsPercent" class="form-control" type="number" required>
+            <label for="imageUrl" class="form-label">Image URL</label>
+            <input id="imageUrl" name="imageUrl" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary mx-5">Prepare Transaction</button>
+    </form>
+  </div>
+</div>
+
+
+{% endblock %}

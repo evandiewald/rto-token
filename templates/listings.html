@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<a type="button" href="/listings/new" class="btn btn-primary my-3"><h2>New Rental</h2></a>
+<h2>Active Listings</h2>
+<div class="row row-cols-1 row-cols-md-4 g-4 my-2">
+  {% for listing in listings %}
+  <div class="col">
+    <div class="card h-100">
+      <img src="{{listing['imageUrl']}}" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">{{listing['streetAddress']}}</h5>
+        <p class="card-text">{{listing['description']}}</p>
+        {% set view_url = '/listings/' + listing['renter'] %}
+        <a type="button" href={{view_url}} class="btn btn-primary">View Listing</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+
+{% endblock %}

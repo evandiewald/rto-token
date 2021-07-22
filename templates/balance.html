@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="card my-3 col-6 mx-auto">
+
+  <h5 class="card-header">RTO Balance</h5>
+  <div class="card-body">
+    <div class="my-3 mx-5">
+        <label class="form-label">Wallet Address: <code>{{address}}</code></label>
+        <label class="form-label">Balance: <code>{{balance}}</code> RTO</label>
+    </div>
+<!--    <button class="btn btn-primary mx-5">View on Etherscan</button>-->
+  </div>
+</div>
+
+
+{% endblock %}

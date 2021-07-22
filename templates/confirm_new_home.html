@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card my-3 col-9 mx-auto">
+    <h5 class="card-header">Submit Transaction with Metamask</h5>
+    <div class="card-body">
+        <form id="txn-form" method="post" enctype="multipart/form-data" action="/">
+            <button type="button" class="enableEthereumButton btn btn-warning mb-3">Connect Metamask <img src="https://raw.githubusercontent.com/MetaMask/brand-resources/c3c894bb8c460a2e9f47c07f6ef32e234190a7aa/SVG/metamask-fox.svg" height="24"></button>
+            <div class="mb-3">
+                <p>Account: <code><span class="showAccount">Connect Metamask to Access Account</span></code></p>
+            </div>
+
+            <p>Smart Contract Method: <a href="https://ropsten.etherscan.io/address/0xf2433ed43d36b5b8f54db39ab2aafc397f13c695" target="_blank" rel="noopener noreferrer"><code>RTOToken.addHome</code> <i class="bi bi-box-arrow-up-right"></i></a></p>
+            <p>Renter: <code>{{renter}}</code></p>
+            <p>Down Payment: <code>{{listPrice}}</code> RTO</p>
+            <p>Earnings Percentage: <code>{{earningsPercent}}</code> %</p>
+
+            <div class="mb-3">
+                <label for="txn_hash" hidden>Transaction Hash: <span class="showTransaction" hidden>Sign Transaction to Get Hash</span></label>
+                <input id="txn_hash" name="txn_hash" readonly hidden>
+                <input id="renter" name="renter" readonly hidden>
+            </div>
+
+            <button type="button" class="sendTxnButton btn btn-primary mb-3" disabled>Sign Transaction</button>
+            <button type="submit" id="submit_button" class="btn btn-primary mb-3" disabled hidden>Submit</button>
+
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block javascript %}
+<script>
+    const ethereumButton = document.querySelector('.enableEthereumButton');
+    const showAccount = document.querySelector('.showAccount');
+    const sendTxnButton = document.querySelector('.sendTxnButton');
+    const txnHash = document.getElementById('txn_hash');
+    const submitButton = document.getElementById('submit_button');
+    const showTransaction = document.querySelector('.showTransaction');
+    const transactionForm = document.getElementById('txn-form');
+
+    let accounts = [];
+
+    sendTxnButton.addEventListener('click', () => {
+      sendTxnButton.disabled = true;
+      sendTxnButton.innerHTML = "Connecting to Metamask...";
+      ethereum
+        .request({
+          method: 'eth_sendTransaction',
+          params: [
+            {
+              from: ethereum.selectedAddress,
+              to: "{{contract_address}}",
+              value: '0x0',
+              gasPrice: '0x4A817C800',
+              gas: '0x1E8480',
+              data: "{{txn_data}}",
+              chainId: '0x3'
+            },
+          ],
+        })
+        .then((txHash) => logTransaction(txHash))
+        .catch((error) => console.error);
+    });
+
+
+    ethereumButton.addEventListener('click', () => {
+      getAccount();
+    });
+
+    async function logTransaction(txHash) {
+        console.log(txHash);
+        txnHash.setAttribute("value", txHash);
+        submitButton.disabled = false;
+        showTransaction.innerHTML = txHash;
+        sendTxnButton.innerHTML = "Sending...";
+        transactionForm.submit();
+        // this.form.submit();
+    }
+
+    async function getAccount() {
+      const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+      const account = accounts[0];
+      showAccount.innerHTML = account;
+      sendTxnButton.disabled = false;
+      ethereumButton.disabled = true;
+    }
+</script>
+{% endblock %}

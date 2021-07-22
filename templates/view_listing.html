@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="card my-3 col-6 mx-auto">
+
+    <img src="{{listing['imageUrl']}}" class="card-img-top" alt="...">
+    <div class="card-body">
+        <h5 class="card-title">{{listing['streetAddress']}}</h5>
+        <p class="card-text">{{listing['description']}}</p>
+        <h6 class="card-text">Blockchain Data</h6>
+        <p class="card-text">Rented by: <code>{{blockchain_data[0]}}</code></p>
+        <p class="card-text">Owned by: <code>{{blockchain_data[1]}}</code></p>
+        <p class="card-text">Listed Balance: <code>{{blockchain_data[2]}} RTO</code></p>
+        <p class="card-text">Balance Paid: <code>{{blockchain_data[3]}} RTO</code></p>
+        <p class="card-text">Earnings Percentage: <code>{{blockchain_data[4]}} %</code></p>
+        <p class="card-text" hidden><a href={{listing['transactionUrl']}}>View on Etherscan</a></p>
+        <a type="button" href="/listings" class="btn btn-primary">Back</a>
+    </div>
+</div>
+
+{% endblock %}

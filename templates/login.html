@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="card my-3 col-6 mx-auto">
+
+  <h5 class="card-header">Connect Wallet</h5>
+  <div class="card-body">
+    <form action="/balance/" enctype="multipart/form-data" method="post">
+        <div class="my-3 mx-5">
+            <label for="address" class="form-label">ETH Ropsten Testnet Address</label>
+            <div class="input-group">
+                <button type="button" class="enableEthereumButton btn btn-warning">Connect Metamask <img src="https://raw.githubusercontent.com/MetaMask/brand-resources/c3c894bb8c460a2e9f47c07f6ef32e234190a7aa/SVG/metamask-fox.svg" height="24"></button>
+                <input id="address" name="address" class="form-control showAccount" required readonly>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary mx-5 submitButton" disabled>Check RTO Balance</button>
+    </form>
+  </div>
+</div>
+
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+    const ethereumButton = document.querySelector('.enableEthereumButton');
+    const showAccount = document.querySelector('.showAccount');
+    const submitButton = document.querySelector('.submitButton');
+
+    let accounts = [];
+
+    ethereumButton.addEventListener('click', () => {
+      getAccount();
+    });
+
+    async function getAccount() {
+      const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+      const account = accounts[0];
+      showAccount.innerHTML = account;
+      document.getElementById('address').setAttribute("value", account);
+      submitButton.disabled = false;
+    }
+
+</script>
+
+{% endblock %}

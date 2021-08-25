@@ -19,6 +19,7 @@ import config
 from database import *
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
+from sqlalchemy import inspect
 
 app = FastAPI()
 
@@ -29,6 +30,11 @@ db = create_engine(config.DB_STRING)
 conn = db.connect()
 session = Session(db)
 table = listings_table(db)
+
+# create table if it does not already exist
+if not inspect(db).has_table('listings'):
+    print('\'listings\' table does not yet exist. Creating it now...')
+    table.create()
 
 
 @app.route("/", methods=["GET", "POST"])
